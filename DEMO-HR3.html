@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="ANGELS_HR" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#FFFFFF" />
+  <title>ANGELS_HR — Angelus Business Consultant</title>
+
+  <!-- Official Angelus Red Wing App Icon (Favicon & Home Screen PWA Icon) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23FFFFFF'/%3E%3Cpath d='M16 10 C42 24 68 36 80 54 C86 64 88 76 86 88 C66 82 46 74 30 62 C36 62 43 63 49 64 C39 59 29 53 22 46 C19 41 17 36 17 31 C28 36 41 40 54 44 C41 37 27 30 16 24 Z' fill='%23E11D2E'/%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23FFFFFF'/%3E%3Cpath d='M16 10 C42 24 68 36 80 54 C86 64 88 76 86 88 C66 82 46 74 30 62 C36 62 43 63 49 64 C39 59 29 53 22 46 C19 41 17 36 17 31 C28 36 41 40 54 44 C41 37 27 30 16 24 Z' fill='%23E11D2E'/%3E%3C/svg%3E" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            alabaster: '#F8F7F4',
+            pearl: '#FFFFFF',
+            crimson: {
+              50: '#FEF2F2',
+              100: '#FEE2E2',
+              500: '#EF4444',
+              600: '#DC2626',
+              700: '#B91C1C',
+              800: '#991B1B',
+            },
+            gold: {
+              50: '#FDFBF7',
+              100: '#F7EFE0',
+              400: '#D4AF37',
+              500: '#B48A3E',
+              600: '#96712E',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    body {
+      background-color: #ECEEF2;
+      background-image:
+        radial-gradient(circle at 18% 12%, rgba(220, 38, 38, 0.06), transparent 42%),
+        radial-gradient(circle at 82% 88%, rgba(180, 138, 62, 0.08), transparent 42%);
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); opacity: 0.7; }
+      70% { transform: scale(1.13); opacity: 0; }
+      100% { transform: scale(1.13); opacity: 0; }
+    }
+    .pulse-ring {
+      animation: pulseRing 2.2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0.5; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .sheet-animate {
+      animation: slideUp 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @media print {
+      body * { visibility: hidden; }
+      #printableArea, #printableArea * { visibility: visible; }
+      #printableArea {
+        position: fixed;
+        inset: 0;
+        background: #FFFFFF !important;
+        color: #1E293B !important;
+        padding: 24px;
+        z-index: 9999;
+      }
+    }
+  </style>
+</head>
+<body class="font-sans text-slate-800 antialiased selection:bg-crimson-600 selection:text-white min-h-screen sm:py-5 sm:px-4 flex items-center justify-center">
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="fixed top-4 left-1/2 -translate-x-1/2 z-[80] w-[92%] max-w-[390px] flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- ======================================================================= -->
+  <!-- MOBILE-FIRST APP FRAME (100% full-screen on phone, 430px frame on PC)   -->
+  <!-- ======================================================================= -->
+  <div class="w-full sm:max-w-[430px] h-screen sm:h-[850px] sm:max-h-[93vh] bg-alabaster sm:rounded-[34px] sm:shadow-[0_24px_70px_-15px_rgba(15,23,42,0.18)] sm:border sm:border-white relative overflow-hidden flex flex-col">
+
+    <!-- ===================================================================== -->
+    <!-- SCREEN 1: INVITE-ONLY LOGIN SCREEN                                    -->
+    <!-- ===================================================================== -->
+    <section id="loginScreen" class="hidden absolute inset-0 z-50 bg-alabaster flex flex-col justify-between p-6 overflow-y-auto no-scrollbar">
+      <div class="pt-5">
+        <!-- Official Angelus Red Wing Logo Mark -->
+        <div class="flex flex-col items-center text-center mb-6">
+          <div class="w-16 h-16 rounded-2xl bg-white border border-crimson-100 flex items-center justify-center shadow-lg shadow-crimson-600/15 mb-3.5 p-2.5">
+            <svg class="w-full h-full" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Angelus Logo">
+              <path d="M16 10 C42 24 68 36 80 54 C86 64 88 76 86 88 C66 82 46 74 30 62 C36 62 43 63 49 64 C39 59 29 53 22 46 C19 41 17 36 17 31 C28 36 41 40 54 44 C41 37 27 30 16 24 Z" fill="#E11D2E"/>
+            </svg>
+          </div>
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-gold-100 border border-gold-500/30 text-gold-600 text-[10px] font-bold tracking-wider uppercase mb-2">
+            <i data-lucide="shield-check" class="w-3 h-3"></i>
+            <span>Invite-Only Portal</span>
+          </div>
+          <h1 class="text-2xl font-extrabold tracking-tight text-slate-900">ANGELUS</h1>
+          <p class="text-xs font-semibold text-crimson-600 tracking-wide uppercase mt-0.5">Human Resources</p>
+        </div>
+
+        <!-- Login Form -->
+        <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200/70">
+          <form onsubmit="handleManualLogin(event)" class="space-y-3.5">
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">ID Staf / Emel Syarikat</label>
+              <input type="text" id="loginEmailInput" value="qina@angelus.com.my" required
+                placeholder="cth: STF-001 atau emel rasmi"
+                class="w-full px-4 py-3 rounded-2xl bg-alabaster border border-slate-200 text-sm font-medium text-slate-800 focus:outline-none focus:border-crimson-600 focus:bg-white transition-all" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Kata Laluan</label>
+              <input type="password" id="loginPassInput" value="••••••••••" required
+                class="w-full px-4 py-3 rounded-2xl bg-alabaster border border-slate-200 text-sm font-medium text-slate-800 focus:outline-none focus:border-crimson-600 focus:bg-white transition-all" />
+            </div>
+
+            <label class="flex items-center justify-between p-3 rounded-2xl bg-alabaster border border-slate-200/70 cursor-pointer">
+              <div>
+                <p class="text-xs font-bold text-slate-800">Remember Me (30 Days)</p>
+                <p class="text-[10px] text-slate-500">Auto-detect akaun staf setiap pagi</p>
+              </div>
+              <input type="checkbox" id="rememberMeCheck" checked class="w-4 h-4 accent-crimson-600 rounded cursor-pointer" />
+            </label>
+
+            <button type="submit" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-crimson-700 to-crimson-600 hover:from-crimson-800 hover:to-crimson-700 text-white font-bold text-sm shadow-lg shadow-crimson-600/25 active:scale-[0.98] transition-all cursor-pointer">
+              Log Masuk
+            </button>
+          </form>
+
+          <!-- 3 Quick One-Tap Demo Login Buttons -->
+          <div class="mt-5 pt-4 border-t border-slate-100">
+            <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 text-center mb-3">Akses Demo Pantas (Uji Beza Staf)</p>
+            <div class="space-y-2">
+              <div class="grid grid-cols-2 gap-2">
+                <button type="button" onclick="quickLogin('STF-001')" class="py-2.5 px-3 rounded-xl bg-crimson-50 hover:bg-crimson-100 border border-crimson-200 text-crimson-700 text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                  <span class="w-2 h-2 rounded-full bg-crimson-600"></span>
+                  <span>Qina (STF-001)</span>
+                </button>
+                <button type="button" onclick="quickLogin('STF-002')" class="py-2.5 px-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                  <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                  <span>Najwa (STF-002)</span>
+                </button>
+              </div>
+              <button type="button" onclick="quickLogin('ADM-001')" class="w-full py-2.5 px-3 rounded-xl bg-gold-50 hover:bg-gold-100 border border-gold-500/30 text-gold-600 text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                <i data-lucide="shield" class="w-3.5 h-3.5"></i>
+                <span>HR Admin (ADM-001)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="text-center text-[11px] text-slate-400 pt-4">
+        Tiada pendaftaran awam. Akaun didaftarkan oleh HR sahaja.
+      </p>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- SCREEN 2: MAIN APP SHELL                                              -->
+    <!-- ===================================================================== -->
+    <div id="appShell" class="flex-1 flex flex-col h-full overflow-hidden">
+
+      <!-- Clean Pearl White Top Header (NO dark header, NO selawat banner) -->
+      <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/70 px-4 pt-3.5 pb-3 shrink-0">
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-9 h-9 rounded-xl bg-crimson-50 border border-crimson-100 flex items-center justify-center shadow-sm shrink-0 p-1.5">
+              <svg class="w-full h-full" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Angelus Logo">
+                <path d="M16 10 C42 24 68 36 80 54 C86 64 88 76 86 88 C66 82 46 74 30 62 C36 62 43 63 49 64 C39 59 29 53 22 46 C19 41 17 36 17 31 C28 36 41 40 54 44 C41 37 27 30 16 24 Z" fill="#E11D2E"/>
+              </svg>
+            </div>
+            <div class="min-w-0">
+              <h1 id="headerUserGreeting" class="text-sm font-extrabold text-slate-900 truncate">Hi, Qina</h1>
+              <div class="flex items-center gap-1.5 mt-0.5">
+                <span id="headerRoleBadge" class="px-1.5 py-0.2 rounded text-[9px] font-bold uppercase tracking-wider bg-crimson-50 text-crimson-700 border border-crimson-200">STAF</span>
+                <span id="headerUserMeta" class="text-[10px] text-slate-400 truncate">STF-001 • Tax & Accounts</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button onclick="openQuickSwitchSheet()" title="Tukar Profil Demo" class="px-2.5 py-1.5 rounded-xl bg-alabaster hover:bg-slate-100 border border-slate-200/80 text-[10px] font-bold text-slate-700 flex items-center gap-1 cursor-pointer">
+              <i data-lucide="users" class="w-3.5 h-3.5 text-crimson-600"></i>
+              <span>Tukar</span>
+            </button>
+            <button onclick="logoutUser()" title="Log Keluar" class="p-2 rounded-xl bg-alabaster hover:bg-crimson-50 text-slate-500 hover:text-crimson-600 border border-slate-200/80 transition-colors cursor-pointer">
+              <i data-lucide="log-out" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Scrollable Main Content Viewport -->
+      <main id="mainContent" class="flex-1 overflow-y-auto no-scrollbar px-4 py-4 pb-24 space-y-4">
+        <!-- Rendered dynamically -->
+      </main>
+
+      <!-- Fixed Bottom Navigation Bar (5 Tabs) -->
+      <nav class="absolute bottom-0 inset-x-0 z-30 bg-white/95 backdrop-blur-md border-t border-slate-200/80 px-2 py-2 grid grid-cols-5 gap-1">
+        <button onclick="navigate('clock')" data-tab="clock" class="tab-btn flex flex-col items-center justify-center py-1 rounded-xl transition-all cursor-pointer">
+          <i data-lucide="clock" class="w-5 h-5 mb-0.5"></i>
+          <span class="text-[10px] font-bold">Clock</span>
+        </button>
+
+        <button onclick="navigate('leave')" data-tab="leave" class="tab-btn relative flex flex-col items-center justify-center py-1 rounded-xl transition-all cursor-pointer">
+          <i data-lucide="calendar-days" class="w-5 h-5 mb-0.5"></i>
+          <span class="text-[10px] font-bold">Leave</span>
+          <span id="navLeaveDot" class="absolute top-1 right-3 w-2 h-2 rounded-full bg-crimson-600 hidden"></span>
+        </button>
+
+        <button onclick="navigate('payslip')" data-tab="payslip" class="tab-btn flex flex-col items-center justify-center py-1 rounded-xl transition-all cursor-pointer">
+          <i data-lucide="receipt" class="w-5 h-5 mb-0.5"></i>
+          <span class="text-[10px] font-bold">Payslip</span>
+        </button>
+
+        <button onclick="navigate('docs')" data-tab="docs" class="tab-btn flex flex-col items-center justify-center py-1 rounded-xl transition-all cursor-pointer">
+          <i data-lucide="book-open" class="w-5 h-5 mb-0.5"></i>
+          <span class="text-[10px] font-bold">Docs</span>
+        </button>
+
+        <button onclick="navigate('admin')" data-tab="admin" class="tab-btn relative flex flex-col items-center justify-center py-1 rounded-xl transition-all cursor-pointer">
+          <i data-lucide="shield-check" class="w-5 h-5 mb-0.5"></i>
+          <span class="text-[10px] font-bold">Admin</span>
+          <span id="navAdminBadge" class="absolute top-0.5 right-2.5 px-1 min-w-[14px] h-[14px] rounded-full bg-crimson-600 text-white text-[9px] font-bold flex items-center justify-center">2</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- Bottom-Sheet Modal Overlay -->
+    <div id="modalBackdrop" class="hidden absolute inset-0 z-[60] bg-slate-900/45 backdrop-blur-[2px] flex items-end justify-center">
+      <div id="modalSheet" class="sheet-animate w-full bg-white rounded-t-[28px] max-h-[88%] flex flex-col overflow-hidden shadow-2xl">
+        <!-- Dynamic Modal Content -->
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // =========================================================================
+    // STAFF DIRECTORY & INITIAL STATE
+    // =========================================================================
+    const STORAGE_KEY = 'angels_hr_session_v2';
+
+    const STAFF_PROFILES = {
+      'STF-001': {
+        id: 'STF-001',
+        shortName: 'Qina',
+        fullName: 'Nurul Syauqina Najwa',
+        email: 'qina@angelus.com.my',
+        role: 'staff',
+        position: 'Tax & Accounts Associate',
+        dept: 'Tax & Accounts',
+        ic: '030307-03-XXXX',
+        joinDate: '15 Jan 2026',
+        basic: 2800.00,
+        allowance: 250.00,
+        init: 'QN',
+        avatarBg: 'bg-crimson-600'
+      },
+      'STF-002': {
+        id: 'STF-002',
+        shortName: 'Najwa',
+        fullName: 'Siti Najwa Amani',
+        email: 'najwa@angelus.com.my',
+        role: 'staff',
+        position: 'Corporate Secretarial Executive',
+        dept: 'SSM & CoSec',
+        ic: '010819-03-XXXX',
+        joinDate: '03 Mac 2025',
+        basic: 3100.00,
+        allowance: 300.00,
+        init: 'NJ',
+        avatarBg: 'bg-emerald-600'
+      },
+      'ADM-001': {
+        id: 'ADM-001',
+        shortName: 'HR Admin',
+        fullName: 'Puan Hannah (HR Manager)',
+        email: 'admin@angelus.com.my',
+        role: 'admin',
+        position: 'Human Resources Manager',
+        dept: 'HR & Administration',
+        ic: '890412-10-XXXX',
+        joinDate: '01 Feb 2022',
+        basic: 4800.00,
+        allowance: 500.00,
+        init: 'HR',
+        avatarBg: 'bg-gold-500'
+      }
+    };
+
+    const state = {
+      currentUserId: 'STF-001',
+      activeTab: 'clock',
+      docsSubTab: 'polisi',
+      demoBarOpen: true,
+      simTimeMode: 'live', // 'live' | '08:15' | '08:45' | '16:30' | '17:45'
+      simOutsideOffice: false,
+
+      // Per-staff attendance state so switching Qina <-> Najwa shows distinct records
+      attendanceByStaff: {
+        'STF-001': {
+          isUrusanLuar: false,
+          luarNote: '',
+          clockInTime: null,
+          clockInStatus: null, // 'ON TIME' | 'LATE'
+          lateReason: '',
+          clockOutTime: null,
+          clockOutStatus: null, // 'NORMAL OUT' | 'EARLY OUT'
+          earlyReason: '',
+          mode: null, // 'In Office' | 'Urusan Luar'
+          clockInTs: null,
+          workDurationStr: '0j 00m',
+          history: [
+            { date: '26 Nov 2026', inTime: '08:22 AM', inStatus: 'ON TIME', outTime: '05:38 PM', outStatus: 'NORMAL OUT', mode: 'In Office', note: 'Radius Pejabat (12m)' },
+            { date: '25 Nov 2026', inTime: '08:41 AM', inStatus: 'LATE', outTime: '05:35 PM', outStatus: 'NORMAL OUT', mode: 'In Office', note: 'Sebab Lewat: Trafik sesak' }
+          ]
+        },
+        'STF-002': {
+          isUrusanLuar: true,
+          luarNote: 'SSM Kota Bharu — Serahan Borang 49',
+          clockInTime: '08:24 AM',
+          clockInStatus: 'ON TIME',
+          lateReason: '',
+          clockOutTime: null,
+          clockOutStatus: null,
+          earlyReason: '',
+          mode: 'Urusan Luar',
+          clockInTs: Date.now() - (2 * 3600 * 1000 + 18 * 60 * 1000),
+          workDurationStr: '2j 18m',
+          history: [
+            { date: '26 Nov 2026', inTime: '08:19 AM', inStatus: 'ON TIME', outTime: '05:42 PM', outStatus: 'NORMAL OUT', mode: 'In Office', note: 'Radius Pejabat (10m)' }
+          ]
+        },
+        'ADM-001': {
+          isUrusanLuar: false,
+          luarNote: '',
+          clockInTime: '08:10 AM',
+          clockInStatus: 'ON TIME',
+          lateReason: '',
+          clockOutTime: null,
+          clockOutStatus: null,
+          earlyReason: '',
+          mode: 'In Office',
+          clockInTs: Date.now() - (3 * 3600 * 1000 + 5 * 60 * 1000),
+          workDurationStr: '3j 05m',
+          history: [
+            { date: '26 Nov 2026', inTime: '08:08 AM', inStatus: 'ON TIME', outTime: '05:50 PM', outStatus: 'NORMAL OUT', mode: 'In Office', note: 'Radius Pejabat (8m)' }
+          ]
+        }
+      },
+
+      // Live Team Board (Admin View)
+      teamToday: [
+        { id: 'STF-001', name: 'Qina', fullName: 'Nurul Syauqina Najwa', init: 'QN', role: 'Tax', status: 'Belum Masuk', badgeType: 'pending', time: '--:--', note: 'Menunggu Punch In', color: 'bg-crimson-600' },
+        { id: 'STF-002', name: 'Najwa', fullName: 'Siti Najwa Amani', init: 'NJ', role: 'SSM', status: 'Urusan Luar', badgeType: 'luar', time: '08:24 AM', note: 'SSM Kota Bharu — Borang 49', color: 'bg-emerald-600' },
+        { id: 'STF-003', name: 'Hafiz', fullName: 'Muhammad Hafiz', init: 'MH', role: 'Audit', status: 'Late', badgeType: 'late', time: '08:47 AM', note: 'Lewat: Hantar anak ke sekolah', color: 'bg-amber-600' },
+        { id: 'STF-004', name: 'Faiz', fullName: 'Ahmad Faiz', init: 'AF', role: 'Tax', status: 'In Office', badgeType: 'ok', time: '08:18 AM', note: 'ON TIME • Radius Pejabat (12m)', color: 'bg-sky-600' },
+        { id: 'ADM-001', name: 'Hannah', fullName: 'Puan Hannah', init: 'HR', role: 'HR', status: 'In Office', badgeType: 'ok', time: '08:10 AM', note: 'ON TIME • Radius Pejabat (8m)', color: 'bg-gold-500' }
+      ],
+
+      // Leave Balances per Staff
+      leaveBalancesByStaff: {
+        'STF-001': [
+          { key: 'annual', label: 'Annual Leave', short: 'AL', total: 14, used: 2, bar: 'bg-crimson-600', text: 'text-crimson-700' },
+          { key: 'emergency', label: 'Emergency Leave', short: 'EL', total: 3, used: 0, bar: 'bg-gold-500', text: 'text-gold-600' },
+          { key: 'unpaid', label: 'Unpaid Leave', short: 'UL', total: 30, used: 0, trackOnly: true, bar: 'bg-slate-400', text: 'text-slate-600' },
+          { key: 'mc', label: 'MC (Medical)', short: 'MC', total: 14, used: 1, bar: 'bg-emerald-500', text: 'text-emerald-700' },
+          { key: 'hospitalization', label: 'Hospitalization', short: 'HP', total: 60, used: 0, bar: 'bg-sky-500', text: 'text-sky-700' }
+        ],
+        'STF-002': [
+          { key: 'annual', label: 'Annual Leave', short: 'AL', total: 14, used: 4, bar: 'bg-crimson-600', text: 'text-crimson-700' },
+          { key: 'emergency', label: 'Emergency Leave', short: 'EL', total: 3, used: 1, bar: 'bg-gold-500', text: 'text-gold-600' },
+          { key: 'unpaid', label: 'Unpaid Leave', short: 'UL', total: 30, used: 0, trackOnly: true, bar: 'bg-slate-400', text: 'text-slate-600' },
+          { key: 'mc', label: 'MC (Medical)', short: 'MC', total: 14, used: 2, bar: 'bg-emerald-500', text: 'text-emerald-700' },
+          { key: 'hospitalization', label: 'Hospitalization', short: 'HP', total: 60, used: 0, bar: 'bg-sky-500', text: 'text-sky-700' }
+        ],
+        'ADM-001': [
+          { key: 'annual', label: 'Annual Leave', short: 'AL', total: 14, used: 1, bar: 'bg-crimson-600', text: 'text-crimson-700' },
+          { key: 'emergency', label: 'Emergency Leave', short: 'EL', total: 3, used: 0, bar: 'bg-gold-500', text: 'text-gold-600' },
+          { key: 'unpaid', label: 'Unpaid Leave', short: 'UL', total: 30, used: 0, trackOnly: true, bar: 'bg-slate-400', text: 'text-slate-600' },
+          { key: 'mc', label: 'MC (Medical)', short: 'MC', total: 14, used: 0, bar: 'bg-emerald-500', text: 'text-emerald-700' },
+          { key: 'hospitalization', label: 'Hospitalization', short: 'HP', total: 60, used: 0, bar: 'bg-sky-500', text: 'text-sky-700' }
+        ]
+      },
+
+      leaveRequests: [
+        { id: 'LV-204', staffId: 'STF-001', name: 'Qina (STF-001)', typeKey: 'annual', type: 'Annual Leave', dates: '14–15 Dis 2026', days: 2, reason: 'Urusan keluarga di Kelantan', file: 'Tiada', status: 'Pending' },
+        { id: 'LV-203', staffId: 'STF-002', name: 'Najwa (STF-002)', typeKey: 'emergency', type: 'Emergency Leave', dates: '30 Nov 2026', days: 1, reason: 'Kecemasan kereta rosak', file: 'Resit_Bengkel.jpg', status: 'Pending' },
+        { id: 'LV-198', staffId: 'STF-001', name: 'Qina (STF-001)', typeKey: 'mc', type: 'MC (Medical)', dates: '12 Okt 2026', days: 1, reason: 'Demam & klinik panel', file: 'MC_Klinik.pdf', status: 'Approved' }
+      ],
+
+      policies: [
+        { id: 'POL-01', tag: 'KEHADIRAN', title: 'Waktu Kerja (8:30 AM – 5:30 PM)', ack: true, desc: 'Staf wajib Punch In sebelum atau tepat 8:30 AM. Lewat mulai 8:31 AM wajib menyatakan sebab. Punch Out adalah 5:30 PM ke atas; balik awal wajib isi sebab.' },
+        { id: 'POL-02', tag: 'GPS & LUAR', title: 'Polisi GPS Pejabat & Urusan Luar', ack: true, desc: 'Sistem menggunakan GPS telefon (data mudah alih tanpa Wi-Fi wajib). Bagi tugasan luar (LHDN, SSM, Bank, Klien), sila aktifkan mod Urusan Luar beserta catatan ringkas.' },
+        { id: 'POL-03', tag: 'CUTI', title: 'Permohonan Cuti & Sijil MC', ack: false, desc: 'Annual Leave dimohon sekurang-kurangnya 3 hari awal. Sijil MC wajib dimuat naik dalam tempoh 48 jam.' }
+      ],
+
+      trainings: [
+        { id: 'TR-01', title: 'LHDN e-Invoicing Implementation 2026', org: 'LHDN / MIA', date: '18 Okt 2026', hrs: '8 Jam', status: 'Completed', cert: true },
+        { id: 'TR-02', title: 'Corporate Tax & Form C Computation', org: 'Angelus Academy', date: '05 Sep 2026', hrs: '4 Jam', status: 'Completed', cert: true },
+        { id: 'TR-03', title: 'SSM MYDATA & Companies Act 2016', org: 'MAICSA', date: '14 Dis 2026', hrs: '6 Jam', status: 'Upcoming', cert: false }
+      ]
+    };
+
+    // =========================================================================
+    // HELPERS
+    // =========================================================================
+    function getCurrentUser() {
+      return STAFF_PROFILES[state.currentUserId] || STAFF_PROFILES['STF-001'];
+    }
+
+    function getCurrentAttendance() {
+      return state.attendanceByStaff[state.currentUserId];
+    }
+
+    function getCurrentLeaves() {
+      return state.leaveBalancesByStaff[state.currentUserId];
+    }
+
+    function rm(n) {
+      return 'RM ' + Number(n).toLocaleString('en-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function getEffectiveTime() {
+      const now = new Date();
+      if (state.simTimeMode === 'live') {
+        return {
+          hours: now.getHours(),
+          minutes: now.getMinutes(),
+          seconds: now.getSeconds(),
+          display: now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }),
+          short: now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })
+        };
+      }
+      const [hStr, mStr] = state.simTimeMode.split(':');
+      const h = parseInt(hStr, 10);
+      const m = parseInt(mStr, 10);
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      const h12 = h % 12 || 12;
+      const padH = String(h12).padStart(2, '0');
+      const padM = String(m).padStart(2, '0');
+      return {
+        hours: h,
+        minutes: m,
+        seconds: 0,
+        display: `${padH}:${padM}:00 ${ampm}`,
+        short: `${padH}:${padM} ${ampm}`
+      };
+    }
+
+    function showToast(msg, type = 'ok') {
+      const box = document.getElementById('toastContainer');
+      const el = document.createElement('div');
+      const dot = type === 'err' ? 'bg-crimson-500' : type === 'warn' ? 'bg-gold-400' : 'bg-emerald-400';
+      el.className = 'pointer-events-auto bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-2.5 text-xs font-semibold transition-all duration-300';
+      el.innerHTML = `<span class="w-2 h-2 rounded-full ${dot} shrink-0"></span><span class="flex-1">${msg}</span>`;
+      box.appendChild(el);
+      setTimeout(() => {
+        el.classList.add('opacity-0', '-translate-y-2');
+        setTimeout(() => el.remove(), 250);
+      }, 2800);
+    }
+
+    function copyToClipboard(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showToast('Ringkasan WhatsApp berjaya disalin!');
+      } catch (e) {
+        showToast('Gagal menyalin ringkasan.', 'err');
+      }
+      document.body.removeChild(ta);
+    }
+
+    function openSheet(html) {
+      document.getElementById('modalSheet').innerHTML = html;
+      const bd = document.getElementById('modalBackdrop');
+      bd.classList.remove('hidden');
+      bd.classList.add('flex');
+      lucide.createIcons();
+    }
+
+    function closeSheet() {
+      const bd = document.getElementById('modalBackdrop');
+      bd.classList.add('hidden');
+      bd.classList.remove('flex');
+    }
+
+    // =========================================================================
+    // AUTHENTICATION & PERSISTENT SESSION
+    // =========================================================================
+    function handleManualLogin(e) {
+      e.preventDefault();
+      const val = document.getElementById('loginEmailInput').value.trim().toLowerCase();
+      if (val.includes('admin') || val.includes('adm')) {
+        quickLogin('ADM-001');
+      } else if (val.includes('najwa') || val.includes('002')) {
+        quickLogin('STF-002');
+      } else {
+        quickLogin('STF-001');
+      }
+    }
+
+    function quickLogin(userId) {
+      state.currentUserId = userId;
+      const remember = document.getElementById('rememberMeCheck');
+      if (!remember || remember.checked) {
+        try { localStorage.setItem(STORAGE_KEY, userId); } catch (e) {}
+      }
+      document.getElementById('loginScreen').classList.add('hidden');
+      updateHeaderProfile();
+      navigate(STAFF_PROFILES[userId].role === 'admin' ? 'admin' : 'clock');
+      showToast(`Log masuk berjaya: ${STAFF_PROFILES[userId].shortName} (${userId})`);
+    }
+
+    function logoutUser() {
+      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+      document.getElementById('loginScreen').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function openQuickSwitchSheet() {
+      openSheet(`
+        <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+          <div>
+            <h3 class="text-sm font-extrabold text-slate-900">Tukar Akaun Demo</h3>
+            <p class="text-[11px] text-slate-400">Lihat bagaimana sistem bezakan setiap staf</p>
+          </div>
+          <button onclick="closeSheet()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center font-bold cursor-pointer">✕</button>
+        </div>
+        <div class="p-5 space-y-2.5">
+          ${Object.values(STAFF_PROFILES).map(u => `
+            <button onclick="closeSheet(); quickLogin('${u.id}')" class="w-full p-3.5 rounded-2xl border ${state.currentUserId === u.id ? 'bg-crimson-50 border-crimson-300' : 'bg-alabaster border-slate-200/70'} flex items-center justify-between text-left cursor-pointer">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl ${u.avatarBg} text-white font-extrabold text-xs flex items-center justify-center">${u.init}</div>
+                <div>
+                  <p class="text-xs font-extrabold text-slate-900">${u.shortName} <span class="text-slate-400 font-semibold">(${u.id})</span></p>
+                  <p class="text-[11px] text-slate-500">${u.position}</p>
+                </div>
+              </div>
+              ${state.currentUserId === u.id ? '<span class="px-2 py-0.5 rounded-full bg-crimson-600 text-white text-[10px] font-bold">Aktif</span>' : '<span class="text-[11px] font-bold text-slate-400">Pilih →</span>'}
+            </button>
+          `).join('')}
+        </div>
+      `);
+    }
+
+    function updateHeaderProfile() {
+      const u = getCurrentUser();
+      document.getElementById('headerUserGreeting').textContent = `Hi, ${u.shortName}`;
+      document.getElementById('headerUserMeta').textContent = `${u.id} • ${u.dept}`;
+      const badge = document.getElementById('headerRoleBadge');
+      if (u.role === 'admin') {
+        badge.textContent = 'HR ADMIN';
+        badge.className = 'px-1.5 py-0.2 rounded text-[9px] font-bold uppercase tracking-wider bg-gold-100 text-gold-600 border border-gold-500/30';
+      } else {
+        badge.textContent = 'STAF';
+        badge.className = 'px-1.5 py-0.2 rounded text-[9px] font-bold uppercase tracking-wider bg-crimson-50 text-crimson-700 border border-crimson-200';
+      }
+    }
+
+    function navigate(tab) {
+      state.activeTab = tab;
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        if (btn.dataset.tab === tab) {
+          btn.classList.add('text-crimson-600', 'bg-crimson-50/90');
+          btn.classList.remove('text-slate-400', 'hover:text-slate-700');
+        } else {
+          btn.classList.remove('text-crimson-600', 'bg-crimson-50/90');
+          btn.classList.add('text-slate-400', 'hover:text-slate-700');
+        }
+      });
+      renderCurrentTab();
+    }
+
+    function updateNavBadges() {
+      const pending = state.leaveRequests.filter(r => r.status === 'Pending').length;
+      const badge = document.getElementById('navAdminBadge');
+      const dot = document.getElementById('navLeaveDot');
+      if (badge) {
+        badge.textContent = pending;
+        badge.classList.toggle('hidden', pending === 0);
+      }
+      if (dot) dot.classList.toggle('hidden', pending === 0);
+    }
+
+    // =========================================================================
+    // TAB 1: CLOCK (STRICT 8:30 AM / 5:30 PM RULES + GPS + URUSAN LUAR)
+    // =========================================================================
+    function toggleDemoBar() {
+      state.demoBarOpen = !state.demoBarOpen;
+      renderCurrentTab();
+    }
+
+    function setSimTime(val) {
+      state.simTimeMode = val;
+      renderCurrentTab();
+    }
+
+    function toggleSimGPS() {
+      state.simOutsideOffice = !state.simOutsideOffice;
+      showToast(
+        state.simOutsideOffice ? 'GPS Simulator: Luar Radius Pejabat (2.4km)' : 'GPS Simulator: Dalam Radius Pejabat (12m)',
+        state.simOutsideOffice ? 'warn' : 'ok'
+      );
+      renderCurrentTab();
+    }
+
+    function toggleUrusanLuar(checked) {
+      const att = getCurrentAttendance();
+      if (att.clockInTime) return;
+      att.isUrusanLuar = checked;
+      renderCurrentTab();
+    }
+
+    function setQuickLuarNote(txt) {
+      const att = getCurrentAttendance();
+      if (att.clockInTime) return;
+      att.luarNote = txt;
+      renderCurrentTab();
+    }
+
+    function handlePunchButtonClick() {
+      const att = getCurrentAttendance();
+      const t = getEffectiveTime();
+      const totalMins = t.hours * 60 + t.minutes;
+
+      // === PUNCH OUT FLOW ===
+      if (att.clockInTime && !att.clockOutTime) {
+        // Strict Rule: 5:30 PM (17:30 = 1050 mins) or later = NORMAL OUT; before 5:30 PM = EARLY OUT (require reason)
+        if (totalMins < 17 * 60 + 30) {
+          openReasonModal('early', t.short);
+        } else {
+          finalizePunchOut(t.short, 'NORMAL OUT', '');
+        }
+        return;
+      }
+
+      // === PUNCH IN FLOW ===
+      if (att.clockInTime) return;
+
+      // GPS Geofence check
+      if (state.simOutsideOffice && !att.isUrusanLuar) {
+        showToast('Anda di luar radius pejabat (2.4km). Aktifkan "Urusan Luar" dahulu.', 'err');
+        return;
+      }
+
+      if (att.isUrusanLuar) {
+        const inp = document.getElementById('luarNoteField');
+        const val = inp ? inp.value.trim() : att.luarNote.trim();
+        if (!val) {
+          showToast('Sila isi catatan ringkas Urusan Luar sebelum Punch In.', 'warn');
+          if (inp) inp.focus();
+          return;
+        }
+        att.luarNote = val;
+      }
+
+      // Strict Rule: <= 8:30 AM (510 mins) = ON TIME; >= 8:31 AM (511+ mins) = LATE (require reason)
+      if (totalMins > 8 * 60 + 30) {
+        openReasonModal('late', t.short);
+      } else {
+        finalizePunchIn(t.short, 'ON TIME', '');
+      }
+    }
+
+    function openReasonModal(type, timeShort) {
+      const isLate = type === 'late';
+      const quickChips = isLate
+        ? ['Trafik sesak', 'Hantar anak', 'Urusan klinik', 'Hujan lebat']
+        : ['Half-day', 'Kecemasan keluarga', 'Janji temu doktor', 'Urusan bank'];
+
+      openSheet(`
+        <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl ${isLate ? 'bg-crimson-50 text-crimson-600' : 'bg-amber-50 text-amber-600'} flex items-center justify-center">
+              <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-extrabold text-slate-900">${isLate ? 'Lewat Masuk (Selepas 8:30 AM)' : 'Balik Awal (Sebelum 5:30 PM)'}</h3>
+              <p class="text-[11px] text-slate-500">Masa direkodkan: <span class="font-bold text-slate-800">${timeShort}</span></p>
+            </div>
+          </div>
+          <button onclick="closeSheet()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 font-bold text-xs cursor-pointer">✕</button>
+        </div>
+        <form onsubmit="submitReasonModal(event, '${type}', '${timeShort}')" class="p-5 space-y-4">
+          <div>
+            <p class="text-[11px] font-bold text-slate-500 uppercase mb-2">Pilihan Pantas</p>
+            <div class="flex flex-wrap gap-1.5">
+              ${quickChips.map(c => `
+                <button type="button" onclick="document.getElementById('reasonInputField').value='${c}'"
+                  class="px-2.5 py-1.5 rounded-xl bg-alabaster hover:bg-crimson-50 border border-slate-200 text-slate-700 hover:text-crimson-700 text-xs font-semibold cursor-pointer">
+                  ${c}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1.5">${isLate ? 'Sebab Lewat (Wajib)' : 'Sebab Balik Awal (Wajib)'}</label>
+            <textarea id="reasonInputField" rows="3" required placeholder="Nyatakan sebab dengan jelas untuk rekod HR..."
+              class="w-full px-3.5 py-2.5 rounded-2xl bg-alabaster border border-slate-200 text-xs text-slate-800 focus:outline-none focus:border-crimson-600 focus:bg-white"></textarea>
+          </div>
+          <div class="flex gap-2 pt-1">
+            <button type="button" onclick="closeSheet()" class="flex-1 py-3 rounded-xl bg-slate-100 text-slate-600 text-xs font-bold cursor-pointer">Batal</button>
+            <button type="submit" class="flex-1 py-3 rounded-xl ${isLate ? 'bg-crimson-600 hover:bg-crimson-700' : 'bg-gold-500 hover:bg-gold-600'} text-white text-xs font-bold shadow-md cursor-pointer">
+              Sahkan ${isLate ? 'Punch In' : 'Punch Out'}
+            </button>
+          </div>
+        </form>
+      `);
+    }
+
+    function submitReasonModal(e, type, timeShort) {
+      e.preventDefault();
+      const reason = document.getElementById('reasonInputField').value.trim();
+      if (!reason) return;
+      closeSheet();
+      if (type === 'late') {
+        finalizePunchIn(timeShort, 'LATE', reason);
+      } else {
+        finalizePunchOut(timeShort, 'EARLY OUT', reason);
+      }
+    }
+
+    function finalizePunchIn(timeShort, status, lateReason) {
+      const att = getCurrentAttendance();
+      const u = getCurrentUser();
+      att.clockInTime = timeShort;
+      att.clockInStatus = status;
+      att.lateReason = lateReason;
+      att.mode = att.isUrusanLuar ? 'Urusan Luar' : 'In Office';
+      att.clockInTs = Date.now();
+
+      // Sync to Admin Live Board
+      const row = state.teamToday.find(t => t.id === u.id);
+      if (row) {
+        row.time = timeShort;
+        if (status === 'LATE') {
+          row.status = 'Late';
+          row.badgeType = 'late';
+          row.note = `Lewat: ${lateReason}` + (att.isUrusanLuar ? ` • Luar: ${att.luarNote}` : '');
+        } else if (att.isUrusanLuar) {
+          row.status = 'Urusan Luar';
+          row.badgeType = 'luar';
+          row.note = att.luarNote;
+        } else {
+          row.status = 'In Office';
+          row.badgeType = 'ok';
+          row.note = 'ON TIME • Radius Pejabat (12m)';
+        }
+      }
+
+      showToast(`Punch In direkodkan (${timeShort}) — ${status}`, status === 'LATE' ? 'warn' : 'ok');
+      renderCurrentTab();
+    }
+
+    function finalizePunchOut(timeShort, status, earlyReason) {
+      const att = getCurrentAttendance();
+      const u = getCurrentUser();
+      att.clockOutTime = timeShort;
+      att.clockOutStatus = status;
+      att.earlyReason = earlyReason;
+
+      // Add to history top
+      att.history.unshift({
+        date: '27 Nov 2026 (Hari Ini)',
+        inTime: att.clockInTime,
+        inStatus: att.clockInStatus,
+        outTime: timeShort,
+        outStatus: status,
+        mode: att.mode,
+        note: [
+          att.lateReason ? `Lewat: ${att.lateReason}` : '',
+          earlyReason ? `Balik Awal: ${earlyReason}` : '',
+          att.mode === 'Urusan Luar' ? `Luar: ${att.luarNote}` : 'Radius Pejabat (12m)'
+        ].filter(Boolean).join(' • ')
+      });
+
+      const row = state.teamToday.find(t => t.id === u.id);
+      if (row) {
+        row.status = status === 'EARLY OUT' ? 'Early Out' : 'Selesai';
+        row.badgeType = status === 'EARLY OUT' ? 'late' : 'done';
+        row.note = `${att.clockInTime} – ${timeShort}` + (earlyReason ? ` (${earlyReason})` : '');
+      }
+
+      showToast(`Punch Out direkodkan (${timeShort}) — ${status}`, status === 'EARLY OUT' ? 'warn' : 'ok');
+      renderCurrentTab();
+    }
+
+    function renderClockTab() {
+      const att = getCurrentAttendance();
+      const t = getEffectiveTime();
+      const isIn = Boolean(att.clockInTime);
+      const isOut = Boolean(att.clockOutTime);
+      const isBlocked = !isIn && state.simOutsideOffice && !att.isUrusanLuar;
+
+      return `
+        <!-- Interactive Demo Controls Pill Bar (Collapsible) -->
+        <div class="bg-white rounded-2xl border border-gold-500/30 shadow-sm overflow-hidden">
+          <button type="button" onclick="toggleDemoBar()" class="w-full px-3.5 py-2.5 bg-gold-50/80 flex items-center justify-between text-left cursor-pointer">
+            <div class="flex items-center gap-2">
+              <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 text-gold-600"></i>
+              <span class="text-[11px] font-extrabold text-gold-600 uppercase tracking-wider">Simulator Uji Peraturan (Demo)</span>
+            </div>
+            <i data-lucide="${state.demoBarOpen ? 'chevron-up' : 'chevron-down'}" class="w-4 h-4 text-gold-600"></i>
+          </button>
+          ${state.demoBarOpen ? `
+            <div class="p-3 space-y-2.5 border-t border-gold-100">
+              <div>
+                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Simulator Masa</label>
+                <select onchange="setSimTime(this.value)" class="w-full px-3 py-2 rounded-xl bg-alabaster border border-slate-200 text-xs font-bold text-slate-800 focus:outline-none focus:border-crimson-600">
+                  <option value="live" ${state.simTimeMode === 'live' ? 'selected' : ''}>Masa Sebenar (Live)</option>
+                  <option value="08:15" ${state.simTimeMode === '08:15' ? 'selected' : ''}>08:15 AM (On Time — Sebelum 8:30)</option>
+                  <option value="08:45" ${state.simTimeMode === '08:45' ? 'selected' : ''}>08:45 AM (Late — Wajib Sebab)</option>
+                  <option value="16:30" ${state.simTimeMode === '16:30' ? 'selected' : ''}>04:30 PM (Early Out — Wajib Sebab)</option>
+                  <option value="17:45" ${state.simTimeMode === '17:45' ? 'selected' : ''}>05:45 PM (Normal Out — 5:30+)</option>
+                </select>
+              </div>
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-[11px] font-bold text-slate-600">Lokasi GPS:</span>
+                <button type="button" onclick="toggleSimGPS()" class="px-3 py-1.5 rounded-xl text-[11px] font-bold border transition-all cursor-pointer ${state.simOutsideOffice ? 'bg-crimson-50 text-crimson-700 border-crimson-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'}">
+                  ${state.simOutsideOffice ? 'Luar Radius Pejabat (2.4km)' : 'Dalam Radius Pejabat (12m)'}
+                </button>
+              </div>
+            </div>
+          ` : ''}
+        </div>
+
+        <!-- Main Clock & 1-Tap Punch Card -->
+        <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-200/70">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Jumaat, 27 Nov 2026</span>
+            <span class="px-2.5 py-0.5 rounded-full bg-gold-50 border border-gold-500/30 text-gold-600 text-[10px] font-bold">
+              08:30 AM – 05:30 PM
+            </span>
+          </div>
+
+          <div class="text-center py-1">
+            <div id="liveClockDisplay" class="text-4xl font-extrabold tracking-tight text-slate-900 tabular-nums">
+              ${t.display}
+            </div>
+            <p id="liveTimerLabel" class="text-xs font-semibold mt-1 ${isIn && !isOut ? 'text-emerald-600' : 'text-slate-400'}">
+              ${isOut ? 'Syif Hari Ini Selesai' : isIn ? `Sedang Bekerja • ${att.workDurationStr}` : 'Punch In sebelum 8:30 AM untuk ON TIME'}
+            </p>
+          </div>
+
+          <!-- Big Circular 1-Tap Punch Button -->
+          <div class="flex justify-center my-5">
+            <div class="relative">
+              ${(!isOut && !isBlocked) ? `<div class="pulse-ring absolute inset-0 rounded-full ${isIn ? 'bg-gold-500/30' : 'bg-crimson-600/25'}"></div>` : ''}
+              <button type="button" onclick="handlePunchButtonClick()" ${(isOut || isBlocked) ? 'disabled' : ''}
+                class="relative w-36 h-36 rounded-full flex flex-col items-center justify-center shadow-xl transition-all active:scale-95
+                ${isOut
+                  ? 'bg-slate-100 text-slate-400 border-4 border-slate-200 shadow-none cursor-not-allowed'
+                  : isBlocked
+                  ? 'bg-slate-200 text-slate-500 border-4 border-slate-300 shadow-none cursor-not-allowed'
+                  : isIn
+                  ? 'bg-gradient-to-br from-gold-500 to-gold-600 text-white border-4 border-gold-100 shadow-gold-500/30 cursor-pointer'
+                  : 'bg-gradient-to-br from-crimson-600 to-crimson-700 text-white border-4 border-crimson-100 shadow-crimson-600/35 cursor-pointer'}">
+                <i data-lucide="${isOut ? 'check-circle-2' : isBlocked ? 'lock' : isIn ? 'log-out' : 'fingerprint'}" class="w-8 h-8 mb-1"></i>
+                <span class="text-sm font-extrabold tracking-wide">
+                  ${isOut ? 'SELESAI' : isBlocked ? 'TERKUNCI' : isIn ? 'PUNCH OUT' : 'PUNCH IN'}
+                </span>
+                <span class="text-[10px] opacity-85 mt-0.5 font-medium">
+                  ${isOut ? att.clockOutTime : isBlocked ? 'Luar Radius' : isIn ? 'Tamat Syif' : 'Tekan 1 Kali'}
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Status Badges Strip (if punched) -->
+          ${isIn ? `
+            <div class="flex flex-wrap items-center justify-center gap-1.5 mb-3">
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold ${att.clockInStatus === 'LATE' ? 'bg-crimson-50 text-crimson-700 border border-crimson-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}">
+                ${att.clockInStatus}
+              </span>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold ${att.mode === 'Urusan Luar' ? 'bg-sky-50 text-sky-700 border border-sky-200' : 'bg-slate-100 text-slate-700'}">
+                ${att.mode}
+              </span>
+              ${att.clockOutStatus ? `
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold ${att.clockOutStatus === 'EARLY OUT' ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}">
+                  ${att.clockOutStatus}
+                </span>
+              ` : ''}
+            </div>
+          ` : ''}
+
+          <!-- 3-Column Summary -->
+          <div class="grid grid-cols-3 gap-2 pt-3 border-t border-slate-100 text-center">
+            <div class="bg-alabaster rounded-2xl py-2.5 px-1">
+              <p class="text-[10px] font-bold text-slate-400 uppercase">Masuk</p>
+              <p class="text-xs font-extrabold text-slate-800 mt-0.5">${att.clockInTime || '--:--'}</p>
+            </div>
+            <div class="bg-alabaster rounded-2xl py-2.5 px-1">
+              <p class="text-[10px] font-bold text-slate-400 uppercase">Keluar</p>
+              <p class="text-xs font-extrabold text-slate-800 mt-0.5">${att.clockOutTime || '--:--'}</p>
+            </div>
+            <div class="bg-alabaster rounded-2xl py-2.5 px-1">
+              <p class="text-[10px] font-bold text-slate-400 uppercase">Jam Kerja</p>
+              <p id="summaryDurText" class="text-xs font-extrabold text-crimson-700 mt-0.5">${att.workDurationStr}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- GPS Geofencing & Urusan Luar Card -->
+        <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-200/70 space-y-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${state.simOutsideOffice && !att.isUrusanLuar ? 'bg-crimson-50 text-crimson-600' : 'bg-emerald-50 text-emerald-600'}">
+              <i data-lucide="map-pin" class="w-5 h-5"></i>
+            </div>
+            <div class="min-w-0 flex-1">
+              <p class="text-xs font-extrabold text-slate-800 truncate">
+                ${state.simOutsideOffice ? 'Luar Radius Pejabat (2.4km)' : 'Dalam Radius Pejabat (12m)'}
+              </p>
+              <p class="text-[10px] text-slate-400">Guna data mudah alih — tiada Wi-Fi pejabat wajib</p>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-2xl ${att.isUrusanLuar ? 'bg-sky-50/70 border border-sky-200' : 'bg-alabaster border border-slate-200/70'} transition-all">
+            <label class="flex items-center justify-between cursor-pointer">
+              <div class="flex items-center gap-2.5">
+                <input type="checkbox" ${att.isUrusanLuar ? 'checked' : ''} ${isIn ? 'disabled' : ''} onchange="toggleUrusanLuar(this.checked)"
+                  class="w-4 h-4 accent-crimson-600 rounded cursor-pointer" />
+                <div>
+                  <span class="text-xs font-bold text-slate-800">Urusan Luar / Client Site</span>
+                  <p class="text-[10px] text-slate-500">Tandakan jika bertugas di LHDN, SSM, Bank atau Klien</p>
+                </div>
+              </div>
+            </label>
+
+            ${att.isUrusanLuar ? `
+              <div class="mt-3 space-y-2">
+                <div class="flex flex-wrap gap-1.5">
+                  ${['Urusan LHDN', 'SSM / CoSec', 'Jumpa Klien', 'Urusan Bank'].map(tag => `
+                    <button type="button" onclick="setQuickLuarNote('${tag}')" ${isIn ? 'disabled' : ''}
+                      class="px-2 py-1 rounded-lg text-[10px] font-bold border transition-all cursor-pointer
+                      ${att.luarNote === tag ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-slate-600 border-slate-200'}">
+                      ${tag}
+                    </button>
+                  `).join('')}
+                </div>
+                <input type="text" id="luarNoteField" value="${att.luarNote}" ${isIn ? 'disabled' : ''}
+                  oninput="getCurrentAttendance().luarNote = this.value"
+                  placeholder="Catatan ringkas (cth: Serahan borang LHDN)..."
+                  class="w-full px-3 py-2 rounded-xl bg-white border border-sky-200 text-xs text-slate-800 focus:outline-none focus:border-sky-500" />
+              </div>
+            ` : ''}
+          </div>
+        </div>
+
+        <!-- Attendance Log & Recent History -->
+        <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-200/70 space-y-3">
+          <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Rekod Kehadiran Terkini</h3>
+          <div class="space-y-2">
+            ${att.history.map(h => `
+              <div class="p-3 rounded-2xl bg-alabaster border border-slate-200/60 space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-extrabold text-slate-800">${h.date}</span>
+                  <div class="flex items-center gap-1">
+                    <span class="px-1.5 py-0.5 rounded text-[9px] font-extrabold ${h.inStatus === 'LATE' ? 'bg-crimson-50 text-crimson-700' : 'bg-emerald-50 text-emerald-700'}">${h.inStatus}</span>
+                    ${h.outStatus === 'EARLY OUT' ? `<span class="px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-amber-50 text-amber-700">EARLY OUT</span>` : ''}
+                  </div>
+                </div>
+                <p class="text-[11px] font-semibold text-slate-600">${h.inTime} → ${h.outTime} • <span class="text-slate-500">${h.mode}</span></p>
+                <p class="text-[10px] text-slate-400">${h.note}</p>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // TAB 2: LEAVE & BAKI CUTI
+    // =========================================================================
+    function openApplyLeaveSheet() {
+      const leaves = getCurrentLeaves();
+      openSheet(`
+        <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+          <div>
+            <h3 class="text-sm font-extrabold text-slate-900">Mohon Cuti Baharu</h3>
+            <p class="text-[11px] text-slate-400">Baki cuti ditolak automatik selepas diluluskan HR</p>
+          </div>
+          <button onclick="closeSheet()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 font-bold text-xs cursor-pointer">✕</button>
+        </div>
+        <form onsubmit="submitLeaveForm(event)" class="p-5 space-y-3.5 overflow-y-auto text-xs">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Kategori Cuti</label>
+            <select id="fLeaveType" class="w-full px-3.5 py-2.5 rounded-xl bg-alabaster border border-slate-200 font-semibold text-slate-800">
+              ${leaves.map(l => `<option value="${l.key}">${l.label} (${l.trackOnly ? `Guna: ${l.used}h` : `Baki: ${l.total - l.used} hari`})</option>`).join('')}
+            </select>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Tarikh Mula</label>
+              <input type="date" id="fStartDate" value="2026-12-10" required class="w-full px-3 py-2.5 rounded-xl bg-alabaster border border-slate-200 text-slate-800 font-medium" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Tarikh Tamat</label>
+              <input type="date" id="fEndDate" value="2026-12-10" required class="w-full px-3 py-2.5 rounded-xl bg-alabaster border border-slate-200 text-slate-800 font-medium" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Sebab Permohonan</label>
+            <input type="text" id="fReason" required placeholder="Nyatakan sebab ringkas..." class="w-full px-3.5 py-2.5 rounded-xl bg-alabaster border border-slate-200 text-slate-800" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Lampiran / Sijil MC (Pilihan)</label>
+            <input type="file" id="fFile" class="w-full text-[11px] text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-crimson-50 file:text-crimson-700 file:font-bold" />
+          </div>
+          <div class="pt-2 flex gap-2">
+            <button type="button" onclick="closeSheet()" class="flex-1 py-3 rounded-xl bg-slate-100 text-slate-600 font-bold cursor-pointer">Batal</button>
+            <button type="submit" class="flex-1 py-3 rounded-xl bg-crimson-600 text-white font-bold shadow-md shadow-crimson-600/20 cursor-pointer">Hantar Permohonan</button>
+          </div>
+        </form>
+      `);
+    }
+
+    function submitLeaveForm(e) {
+      e.preventDefault();
+      const u = getCurrentUser();
+      const leaves = getCurrentLeaves();
+      const key = document.getElementById('fLeaveType').value;
+      const s = document.getElementById('fStartDate').value;
+      const en = document.getElementById('fEndDate').value;
+      const reason = document.getElementById('fReason').value;
+      const fInput = document.getElementById('fFile');
+      const file = (fInput && fInput.files && fInput.files[0]) ? fInput.files[0].name : 'Tiada';
+      const days = Math.max(1, Math.floor((new Date(en) - new Date(s)) / 86400000) + 1);
+      const bal = leaves.find(l => l.key === key);
+
+      if (!bal.trackOnly && (bal.total - bal.used) < days) {
+        showToast('Baki cuti tidak mencukupi!', 'err');
+        return;
+      }
+
+      state.leaveRequests.unshift({
+        id: 'LV-' + Math.floor(205 + Math.random() * 700),
+        staffId: u.id,
+        name: `${u.shortName} (${u.id})`,
+        typeKey: key,
+        type: bal.label,
+        dates: s === en ? s : `${s} → ${en}`,
+        days,
+        reason,
+        file,
+        status: 'Pending'
+      });
+      updateNavBadges();
+      closeSheet();
+      showToast(`Permohonan ${bal.label} (${days} hari) dihantar!`);
+      renderCurrentTab();
+    }
+
+    function renderLeaveTab() {
+      const u = getCurrentUser();
+      const leaves = getCurrentLeaves();
+      const myReqs = state.leaveRequests.filter(r => r.staffId === u.id);
+
+      return `
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-base font-extrabold text-slate-900">Baki Cuti 2026</h2>
+            <p class="text-[11px] text-slate-500">Rekod peribadi: ${u.shortName} (${u.id})</p>
+          </div>
+          <button onclick="openApplyLeaveSheet()" class="px-3.5 py-2 rounded-xl bg-crimson-600 hover:bg-crimson-700 text-white text-xs font-bold shadow-md shadow-crimson-600/20 cursor-pointer">
+            + Mohon Cuti
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          ${leaves.map((l, idx) => {
+            const rem = l.total - l.used;
+            const pct = l.trackOnly ? Math.min(100, l.used * 10) : Math.round((rem / l.total) * 100);
+            return `
+              <div class="${idx === 4 ? 'col-span-2' : ''} bg-white rounded-2xl p-3.5 shadow-sm border border-slate-200/70">
+                <div class="flex items-center justify-between mb-1.5">
+                  <span class="text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-alabaster text-slate-500">${l.short}</span>
+                  <span class="text-xs font-extrabold ${l.text}">${l.trackOnly ? `${l.used} Hari` : `${rem}/${l.total}`}</span>
+                </div>
+                <p class="text-xs font-bold text-slate-800 truncate">${l.label}</p>
+                <div class="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden mt-2">
+                  <div class="h-full rounded-full ${l.bar} transition-all duration-500" style="width:${pct}%"></div>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+
+        <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-200/70 space-y-3">
+          <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Permohonan Anda</h3>
+          ${myReqs.length === 0 ? `<p class="text-xs text-slate-400 text-center py-3">Tiada rekod permohonan cuti.</p>` : `
+            <div class="space-y-2.5">
+              ${myReqs.map(r => {
+                const pill = r.status === 'Approved' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : r.status === 'Rejected' ? 'bg-crimson-50 text-crimson-700 border-crimson-200' : 'bg-amber-50 text-amber-700 border-amber-200';
+                return `
+                  <div class="p-3 rounded-2xl bg-alabaster border border-slate-200/60 flex items-start justify-between gap-2">
+                    <div class="min-w-0">
+                      <p class="text-xs font-extrabold text-slate-800 truncate">${r.type} <span class="text-slate-400 font-semibold">• ${r.days}h</span></p>
+                      <p class="text-[11px] font-medium text-slate-600 mt-0.5">${r.dates}</p>
+                      <p class="text-[10px] text-slate-400 truncate mt-0.5">${r.reason}</p>
+                    </div>
+                    <span class="shrink-0 px-2 py-0.5 rounded-full border text-[10px] font-bold ${pill}">${r.status}</span>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          `}
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // TAB 3: PAYSLIP & SALARY REPORT
+    // =========================================================================
+    function getPayslipsForUser(u) {
+      const gross = u.basic + u.allowance;
+      const epf = Number((gross * 0.11).toFixed(2));
+      const socso = 14.75;
+      const eis = 5.90;
+      const net = Number((gross - epf - socso - eis).toFixed(2));
+      return [
+        { id: 'PS-2611', month: 'November 2026', payDate: '27 Nov 2026', basic: u.basic, allow: u.allowance, epf, socso, eis, net },
+        { id: 'PS-2610', month: 'Oktober 2026', payDate: '28 Okt 2026', basic: u.basic, allow: u.allowance, epf, socso, eis, net }
+      ];
+    }
+
+    function openPayslipSheet(id) {
+      const u = getCurrentUser();
+      const p = getPayslipsForUser(u).find(x => x.id === id);
+      if (!p) return;
+      openSheet(`
+        <div id="printableArea" class="p-5 overflow-y-auto space-y-4">
+          <div class="flex items-start justify-between border-b-2 border-crimson-600 pb-3">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-crimson-50 border border-crimson-100 flex items-center justify-center p-1.5 shrink-0">
+                <svg class="w-full h-full" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16 10 C42 24 68 36 80 54 C86 64 88 76 86 88 C66 82 46 74 30 62 C36 62 43 63 49 64 C39 59 29 53 22 46 C19 41 17 36 17 31 C28 36 41 40 54 44 C41 37 27 30 16 24 Z" fill="#E11D2E"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-sm font-extrabold text-slate-900">ANGELUS BUSINESS CONSULTANT</h3>
+                <p class="text-[11px] text-slate-500">SLIP GAJI RASMI • ${p.month.toUpperCase()}</p>
+              </div>
+            </div>
+            <button onclick="closeSheet()" class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 font-bold text-xs cursor-pointer">✕</button>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-xs bg-alabaster p-3 rounded-2xl">
+            <div><p class="text-[10px] text-slate-400 font-bold">NAMA STAF</p><p class="font-bold text-slate-800">${u.fullName}</p></div>
+            <div class="text-right"><p class="text-[10px] text-slate-400 font-bold">ID STAF</p><p class="font-bold text-slate-800">${u.id}</p></div>
+          </div>
+          <div class="space-y-2 text-xs">
+            <p class="text-[10px] font-extrabold text-emerald-700 uppercase">Pendapatan</p>
+            <div class="flex justify-between"><span>Gaji Pokok</span><span class="font-bold">${rm(p.basic)}</span></div>
+            <div class="flex justify-between"><span>Elaun Tetap</span><span class="font-bold">${rm(p.allow)}</span></div>
+            <p class="text-[10px] font-extrabold text-crimson-700 uppercase pt-2 border-t border-slate-100">Potongan Berkanun</p>
+            <div class="flex justify-between"><span>KWSP / EPF (11%)</span><span class="font-bold text-crimson-700">-${rm(p.epf)}</span></div>
+            <div class="flex justify-between"><span>PERKESO / SOCSO</span><span class="font-bold text-crimson-700">-${rm(p.socso)}</span></div>
+            <div class="flex justify-between"><span>SIP / EIS</span><span class="font-bold text-crimson-700">-${rm(p.eis)}</span></div>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-slate-900 text-white flex items-center justify-between">
+            <span class="text-xs font-bold">GAJI BERSIH (NET PAY)</span>
+            <span class="text-base font-extrabold text-gold-400">${rm(p.net)}</span>
+          </div>
+        </div>
+        <div class="p-4 border-t border-slate-100 flex gap-2 bg-white">
+          <button onclick="closeSheet()" class="flex-1 py-2.5 rounded-xl bg-slate-100 text-slate-600 text-xs font-bold cursor-pointer">Tutup</button>
+          <button onclick="window.print()" class="flex-1 py-2.5 rounded-xl bg-crimson-600 text-white text-xs font-bold cursor-pointer">Print / Save PDF</button>
+        </div>
+      `);
+    }
+
+    function renderPayslipTab() {
+      const u = getCurrentUser();
+      const slips = getPayslipsForUser(u);
+      return `
+        <div>
+          <h2 class="text-base font-extrabold text-slate-900">Payslip & Salary Report</h2>
+          <p class="text-[11px] text-slate-500">Slip gaji rasmi: ${u.fullName}</p>
+        </div>
+        <div class="space-y-3">
+          ${slips.map(p => `
+            <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-200/70">
+              <div class="flex items-center justify-between mb-2">
+                <div>
+                  <h3 class="text-sm font-extrabold text-slate-900">${p.month}</h3>
+                  <p class="text-[10px] text-slate-400">Dikreditkan: ${p.payDate} • ${p.id}</p>
+                </div>
+                <span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold">Dibayar</span>
+              </div>
+              <div class="flex items-end justify-between py-2 border-y border-slate-100 my-2">
+                <div>
+                  <p class="text-[10px] font-bold text-slate-400 uppercase">Gaji Bersih</p>
+                  <p class="text-lg font-extrabold text-slate-900">${rm(p.net)}</p>
+                </div>
+                <div class="text-right text-[10px] text-slate-500">
+                  <p>EPF: ${rm(p.epf)}</p>
+                  <p>SOCSO/EIS: ${rm(p.socso + p.eis)}</p>
+                </div>
+              </div>
+              <button onclick="openPayslipSheet('${p.id}')" class="w-full py-2.5 rounded-xl bg-alabaster hover:bg-crimson-50 text-slate-800 hover:text-crimson-700 text-xs font-bold transition-colors cursor-pointer">
+                Lihat Pecahan & Print / Save PDF
+              </button>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // TAB 4: DOCS (POLISI, TRAINING & PERSONALIZED OFFER LETTER)
+    // =========================================================================
+    function setDocsSubTab(sub) {
+      state.docsSubTab = sub;
+      renderCurrentTab();
+    }
+
+    function ackPolicy(id) {
+      const p = state.policies.find(x => x.id === id);
+      if (p) {
+        p.ack = true;
+        showToast(`Polisi ${p.title} disahkan!`);
+        renderCurrentTab();
+      }
+    }
+
+    function renderDocsTab() {
+      const u = getCurrentUser();
+      const sub = state.docsSubTab;
+      let content = '';
+
+      if (sub === 'polisi') {
+        content = `
+          <div class="flex items-center justify-between bg-white rounded-2xl p-3.5 shadow-sm border border-slate-200/70">
+            <div>
+              <p class="text-xs font-extrabold text-slate-900">Employee Handbook v3.0</p>
+              <p class="text-[10px] text-slate-400">Polisi Rasmi Angelus (PDF)</p>
+            </div>
+            <button onclick="showToast('Membuka Angelus_Employee_Handbook.pdf...')" class="px-3 py-1.5 rounded-xl bg-crimson-600 text-white text-[11px] font-bold cursor-pointer">Lihat PDF</button>
+          </div>
+          <div class="space-y-2.5">
+            ${state.policies.map(p => `
+              <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/70 space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="px-2 py-0.5 rounded-md bg-gold-50 border border-gold-500/30 text-gold-600 text-[9px] font-extrabold">${p.tag}</span>
+                  ${p.ack ? '<span class="text-[10px] font-bold text-emerald-600">✓ Dibaca</span>' : `<button onclick="ackPolicy('${p.id}')" class="text-[10px] font-bold text-crimson-600 underline cursor-pointer">Sahkan Baca</button>`}
+                </div>
+                <h4 class="text-xs font-extrabold text-slate-900">${p.title}</h4>
+                <p class="text-[11px] text-slate-500 leading-relaxed">${p.desc}</p>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else if (sub === 'training') {
+        content = `
+          <div class="space-y-2.5">
+            ${state.trainings.map(t => `
+              <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/70">
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <h4 class="text-xs font-extrabold text-slate-900">${t.title}</h4>
+                    <p class="text-[11px] text-slate-500 mt-0.5">${t.org} • ${t.date} (${t.hrs})</p>
+                  </div>
+                  <span class="shrink-0 px-2 py-0.5 rounded-full text-[10px] font-bold ${t.status === 'Completed' ? 'bg-emerald-50 text-emerald-700' : 'bg-sky-50 text-sky-700'}">${t.status}</span>
+                </div>
+                ${t.cert ? `<button onclick="showToast('Membuka Sijil ${t.id}.pdf...')" class="mt-2.5 text-[11px] font-bold text-crimson-600 hover:underline cursor-pointer">Lihat Sijil Penyertaan →</button>` : ''}
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else {
+        content = `
+          <div id="printableArea" class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200/70 space-y-4">
+            <div class="flex items-start justify-between border-b border-slate-100 pb-3">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-crimson-50 border border-crimson-100 flex items-center justify-center p-1.5 shrink-0">
+                  <svg class="w-full h-full" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 10 C42 24 68 36 80 54 C86 64 88 76 86 88 C66 82 46 74 30 62 C36 62 43 63 49 64 C39 59 29 53 22 46 C19 41 17 36 17 31 C28 36 41 40 54 44 C41 37 27 30 16 24 Z" fill="#E11D2E"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-[10px] font-extrabold text-crimson-700 uppercase tracking-wider">Surat Tawaran Rasmi</p>
+                  <h3 class="text-sm font-extrabold text-slate-900 mt-0.5">Angelus Business Consultant</h3>
+                </div>
+              </div>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold">✓ Disahkan</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2.5 text-xs bg-alabaster p-3 rounded-2xl">
+              <div><p class="text-[10px] text-slate-400">Nama</p><p class="font-bold text-slate-800">${u.fullName}</p></div>
+              <div><p class="text-[10px] text-slate-400">ID Staf</p><p class="font-bold text-slate-800">${u.id}</p></div>
+              <div><p class="text-[10px] text-slate-400">Jawatan</p><p class="font-bold text-slate-800">${u.position}</p></div>
+              <div><p class="text-[10px] text-slate-400">Pakej Bulanan</p><p class="font-bold text-emerald-700">${rm(u.basic + u.allowance)}</p></div>
+            </div>
+            <p class="text-[11px] text-slate-600 leading-relaxed">
+              Dengan ini disahkan pelantikan rasmi kakitangan <strong>${u.fullName}</strong> bermula <strong>${u.joinDate}</strong> bersama faedah penuh KWSP, PERKESO, SIP, dan kelayakan cuti tahunan mengikut Employee Handbook syarikat.
+            </p>
+            <button onclick="window.print()" class="w-full py-2.5 rounded-xl bg-crimson-600 text-white text-xs font-bold cursor-pointer">
+              Print / Save Offer Letter PDF
+            </button>
+          </div>
+        `;
+      }
+
+      return `
+        <div>
+          <h2 class="text-base font-extrabold text-slate-900">Dokumen & Polisi HR</h2>
+          <p class="text-[11px] text-slate-500">Employee Handbook, Latihan & Offer Letter</p>
+        </div>
+        <div class="p-1 rounded-2xl bg-slate-200/70 grid grid-cols-3 gap-1">
+          <button onclick="setDocsSubTab('polisi')" class="py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${sub === 'polisi' ? 'bg-white text-crimson-700 shadow-sm' : 'text-slate-600'}">Polisi</button>
+          <button onclick="setDocsSubTab('training')" class="py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${sub === 'training' ? 'bg-white text-crimson-700 shadow-sm' : 'text-slate-600'}">Training</button>
+          <button onclick="setDocsSubTab('offer')" class="py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${sub === 'offer' ? 'bg-white text-crimson-700 shadow-sm' : 'text-slate-600'}">Offer Letter</button>
+        </div>
+        ${content}
+      `;
+    }
+
+    // =========================================================================
+    // TAB 5: HR ADMIN PANEL
+    // =========================================================================
+    function handleAdminLeaveAction(id, decision) {
+      const req = state.leaveRequests.find(r => r.id === id);
+      if (!req || req.status !== 'Pending') return;
+      req.status = decision;
+      if (decision === 'Approved') {
+        const staffLeaves = state.leaveBalancesByStaff[req.staffId];
+        if (staffLeaves) {
+          const bal = staffLeaves.find(l => l.key === req.typeKey);
+          if (bal) bal.used += req.days;
+        }
+      }
+      updateNavBadges();
+      showToast(`${req.id} ${decision === 'Approved' ? 'Diluluskan & Baki Cuti ditolak' : 'Ditolak'}!`);
+      renderCurrentTab();
+    }
+
+    function copyWhatsAppSummary() {
+      const text = [
+        `*ANGELS_HR — LAPORAN KEHADIRAN HARIAN*`,
+        `Tarikh: Jumaat, 27 Nov 2026`,
+        `--------------------------------`,
+        ...state.teamToday.map(t => `• *${t.name}* [${t.status}] ${t.time} — ${t.note}`),
+        `--------------------------------`
+      ].join('\n');
+      copyToClipboard(text);
+    }
+
+    function exportAttendanceCSV() {
+      const rows = [
+        ['ID', 'Nama', 'Bahagian', 'Status', 'Masa Masuk', 'Catatan'],
+        ...state.teamToday.map(t => [t.id, `"${t.fullName}"`, t.role, t.status, t.time, `"${t.note}"`])
+      ];
+      const uri = 'data:text/csv;charset=utf-8,' + rows.map(r => r.join(',')).join('\n');
+      const a = document.createElement('a');
+      a.href = encodeURI(uri);
+      a.download = 'ANGELS_HR_Daily_27Nov2026.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast('Fail CSV kehadiran berjaya dimuat turun!');
+    }
+
+    function renderAdminTab() {
+      const pendingList = state.leaveRequests.filter(r => r.status === 'Pending');
+      return `
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-base font-extrabold text-slate-900">Panel HR Admin</h2>
+            <p class="text-[11px] text-slate-500">Siapa di pejabat, kelulusan cuti & laporan</p>
+          </div>
+          <span class="px-2.5 py-1 rounded-full bg-gold-100 border border-gold-500/30 text-gold-600 text-[10px] font-extrabold">LIVE</span>
+        </div>
+
+        <!-- One-Click Daily Report Actions -->
+        <div class="grid grid-cols-2 gap-2.5">
+          <button onclick="copyWhatsAppSummary()" class="py-3 px-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm flex items-center justify-center gap-1.5 cursor-pointer">
+            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+            <span>Copy WhatsApp</span>
+          </button>
+          <button onclick="exportAttendanceCSV()" class="py-3 px-3 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 text-xs font-bold shadow-sm flex items-center justify-center gap-1.5 cursor-pointer">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>Export CSV</span>
+          </button>
+        </div>
+
+        <!-- Pending Leave Approvals -->
+        <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-200/70 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Kelulusan Cuti (${pendingList.length})</h3>
+            <span class="text-[10px] text-slate-400">Tolak baki automatik</span>
+          </div>
+          ${pendingList.length === 0 ? `<p class="text-xs text-slate-400 text-center py-3">Tiada permohonan menunggu kelulusan.</p>` : `
+            <div class="space-y-2.5">
+              ${pendingList.map(r => `
+                <div class="p-3.5 rounded-2xl bg-alabaster border border-slate-200/70 space-y-2.5">
+                  <div>
+                    <p class="text-xs font-extrabold text-slate-900">${r.name}</p>
+                    <p class="text-[11px] font-semibold text-crimson-700">${r.type} • ${r.days} hari (${r.dates})</p>
+                    <p class="text-[10px] text-slate-500 mt-0.5">${r.reason}</p>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2">
+                    <button onclick="handleAdminLeaveAction('${r.id}', 'Approved')" class="py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold cursor-pointer">Approve</button>
+                    <button onclick="handleAdminLeaveAction('${r.id}', 'Rejected')" class="py-2 rounded-xl bg-crimson-50 hover:bg-crimson-100 text-crimson-700 text-xs font-bold cursor-pointer">Reject</button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          `}
+        </div>
+
+        <!-- Live Office Presence Board -->
+        <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-200/70 space-y-3">
+          <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Siapa di Pejabat Hari Ini</h3>
+          <div class="space-y-2">
+            ${state.teamToday.map(t => {
+              const badge = t.badgeType === 'ok'
+                ? 'bg-emerald-50 text-emerald-700'
+                : t.badgeType === 'luar'
+                ? 'bg-sky-50 text-sky-700'
+                : t.badgeType === 'late'
+                ? 'bg-crimson-50 text-crimson-700'
+                : t.badgeType === 'done'
+                ? 'bg-slate-100 text-slate-700'
+                : 'bg-amber-50 text-amber-700';
+              return `
+                <div class="p-3 rounded-2xl bg-alabaster flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2.5 min-w-0">
+                    <div class="w-8 h-8 rounded-xl ${t.color} text-white text-[10px] font-extrabold flex items-center justify-center shrink-0">${t.init}</div>
+                    <div class="min-w-0">
+                      <p class="text-xs font-bold text-slate-800 truncate">${t.name} <span class="text-slate-400 font-normal">(${t.id})</span></p>
+                      <p class="text-[10px] text-slate-500 truncate">${t.note}</p>
+                    </div>
+                  </div>
+                  <div class="text-right shrink-0">
+                    <span class="px-2 py-0.5 rounded-md text-[10px] font-bold ${badge}">${t.status}</span>
+                    <p class="text-[10px] font-semibold text-slate-400 mt-0.5">${t.time}</p>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // RENDER & LIVE CLOCK TICKER
+    // =========================================================================
+    function renderCurrentTab() {
+      const main = document.getElementById('mainContent');
+      switch (state.activeTab) {
+        case 'clock': main.innerHTML = renderClockTab(); break;
+        case 'leave': main.innerHTML = renderLeaveTab(); break;
+        case 'payslip': main.innerHTML = renderPayslipTab(); break;
+        case 'docs': main.innerHTML = renderDocsTab(); break;
+        case 'admin': main.innerHTML = renderAdminTab(); break;
+      }
+      lucide.createIcons();
+    }
+
+    function tickClock() {
+      const t = getEffectiveTime();
+      const el = document.getElementById('liveClockDisplay');
+      if (el) el.textContent = t.display;
+
+      const att = getCurrentAttendance();
+      if (att && att.clockInTs && !att.clockOutTime) {
+        const diff = Math.max(1, Math.floor((Date.now() - att.clockInTs) / 1000));
+        const h = Math.floor(diff / 3600);
+        const m = Math.floor((diff % 3600) / 60);
+        att.workDurationStr = `${h}j ${String(m).padStart(2, '0')}m`;
+        const lbl = document.getElementById('liveTimerLabel');
+        if (lbl) lbl.textContent = `Sedang Bekerja • ${att.workDurationStr}`;
+        const durEl = document.getElementById('summaryDurText');
+        if (durEl) durEl.textContent = att.workDurationStr;
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved && STAFF_PROFILES[saved]) {
+          state.currentUserId = saved;
+        }
+      } catch (e) {}
+      updateHeaderProfile();
+      updateNavBadges();
+      navigate('clock');
+      setInterval(tickClock, 1000);
+    });
+  </script>
+</body>
+</html>
